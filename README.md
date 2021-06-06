@@ -1,10 +1,10 @@
-#### Force enable VoLTE for OnePlus
+## Force enable VoLTE for OnePlus
 
 Enable VoLTE (especially for Japanese users) of OnePlus phones.
 This module replaces stock modem mbn files with Pixel 5's files.
 Tested on OnePlus 9 Pro (Android 11).
 
-#### Credit & Support
+## Credit & Support
 
 * Google Pixel team
 
