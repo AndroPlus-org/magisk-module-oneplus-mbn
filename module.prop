@@ -1,0 +1,6 @@
+id=mbn-pixel5
+name=Force enable VoLTE for OnePlus
+version=01
+versionCode=01
+author=AndroPlus
+description=Force VoLTE support with Pixel 5's mbn

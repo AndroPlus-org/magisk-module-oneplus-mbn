@@ -1,0 +1,7 @@
+mcfg_sw/generic/apac/dcm/commerci/mcfg_sw.mbn
+mcfg_sw/generic/apac/kddi/commerci/mcfg_sw.mbn
+mcfg_sw/generic/apac/sbm/commerci/mcfg_sw.mbn
+mcfg_sw/generic/common/default/cust_def/mcfg_sw.mbn
+mcfg_sw/generic/common/row/commerci/mcfg_sw.mbn
+mcfg_sw/generic/common/w_one/commerci/mcfg_sw.mbn
+mcfg_sw/generic/common/test/commerci/mcfg_sw.mbn
