@@ -1,6 +1,11 @@
-REPLACE="
-/system/vendor/firmware_mnt/image/modem_pr/mcfg/configs/mcfg_sw/generic/APAC
-"
+#!/system/bin/sh
+# Do NOT assume where your module will be located.
+# ALWAYS use $MODDIR if you need to know where this script
+# and module is placed.
+# This will make sure your module will still work
+# if Magisk change its mount point in the future
+MODDIR=${0%/*}
+# This script will be executed in post-fs-data mode
 
 local MBN_LIST
 local MBN_FILES
@@ -35,10 +40,3 @@ local MBNFILE_OEM
 for MBNFILE_OEM in $MBN_FILES; do
 grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM"
 done
-
-rm -rf /data/vendor/modem*
-rm -rf /data/vendor/radio/*
-
-ui_print ""
-ui_print "After reboot, you should be able to get VoLTE enabled"
-ui_print ""

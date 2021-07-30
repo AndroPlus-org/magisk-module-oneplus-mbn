@@ -14,6 +14,9 @@ Android 11 搭載の [OnePlus 9 Pro](https://androplus.org/entry/oneplus-9-pro-r
 
 ## Change log
 
+#### v03
+* Change modding method
+
 #### v02
 * Change modem files to ColorOS for OnePlus 9 Pro
 

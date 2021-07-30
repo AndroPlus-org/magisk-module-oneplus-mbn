@@ -1,6 +1,6 @@
 id=mbn-pixel5
 name=Force enable VoLTE for OnePlus
-version=02
-versionCode=02
+version=03
+versionCode=03
 author=AndroPlus
 description=Force VoLTE support with ColorOS' mbn
