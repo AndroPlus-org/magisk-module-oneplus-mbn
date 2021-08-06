@@ -13,6 +13,12 @@ mcfg_sw/generic/APAC/Rakuten/Commercial/mcfg_sw.mbn
 mcfg_sw/generic/APAC/SBM/Commercial/mcfg_sw.mbn
 "
 
+ui_print "- Installing Thai carrier configs"
+unzip -o "$ZIPFILE" "mbn/*" -d "$MODPATH" >&2
+mkdir -p "${MODPATH}/system${MBN_LIST}"
+mv "${MODPATH}/mbn/${MBN_LIST}/"* "${MODPATH}/system${MBN_LIST}/"
+rm -rf "${MODPATH}/mbn"
+
 local MODPATH_LIST="${MODPATH}/system${MBN_LIST}/mbn_sw.txt"
 cp "${MBN_LIST}/mbn_sw.txt" "$MODPATH_LIST"
 

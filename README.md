@@ -4,13 +4,10 @@ Enable VoLTE (especially for Japanese users) of OnePlus phones.
 This module replaces stock modem mbn files with ColorOS for OnePlus 9 Pro's files.   
 Tested on OnePlus 9 Pro (Android 11).  
 
-OnePlus スマートフォンでの日本のキャリア向け VoLTE を有効化します。  
+OnePlus スマートフォンでの日本のキャリア向け VoLTE の有効化を維持します。  
 OnePlus 9 Pro 用 ColorOS より抜き出した mbn ファイルを利用しています。  
-Android 11 搭載の [OnePlus 9 Pro](https://androplus.org/entry/oneplus-9-pro-real-review/) にて動作確認しています。
-
-## Credit
-
-* Google Pixel team
+Android 11 搭載の [OnePlus 9 Pro](https://androplus.org/entry/oneplus-9-pro-real-review/) にて動作確認しています。  
+このモジュールはすでに VoLTE が有効にされている状態で OTA アップデートした時に VoLTE 有効化状態を維持するためのものです。  
 
 ## Change log
 
