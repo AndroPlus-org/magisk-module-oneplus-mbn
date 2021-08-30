@@ -12,10 +12,10 @@ local MBN_FILES
 
 MBN_LIST="/vendor/firmware_mnt/image/modem_pr/mcfg/configs/mcfg_sw"
 MBN_FILES="
-mcfg_sw/generic/APAC/DCM/pixel_Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/KDDI/pixel_Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/Rakuten/pixel_Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/SBM/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/DCM/pixel_Commercial
+mcfg_sw/generic/APAC/KDDI/pixel_Commercial
+mcfg_sw/generic/APAC/Rakuten/pixel_Commercial
+mcfg_sw/generic/APAC/SBM/pixel_Commercial
 "
 
 local MODPATH_LIST="${MODPATH}/system${MBN_LIST}/mbn_sw.txt"
@@ -26,8 +26,12 @@ cp "${MBN_LIST}/mbn_sw.txt" "$MODPATH_LIST"
 echo "" >> "$MODPATH_LIST"
 local MBNFILE
 for MBNFILE in $MBN_FILES; do
-grep -qF "$MBNFILE" "$MODPATH_LIST" || echo "$MBNFILE" >> "$MODPATH_LIST"
-
+grep -qF "$MBNFILE/mcfg_sw.mbn" "$MODPATH_LIST" || echo "$MBNFILE/mcfg_sw.mbn" >> "$MODPATH_LIST"
+if [ -d /data/vendor/modem_config ]; then
+	cp -ra "$MODPATH_LIST" "/data/vendor/modem_config/mcfg_sw/mbn_sw.txt"
+	mkdir -p "/data/vendor/modem_config/${MBNFILE}"
+	cp -ra "${MBN_LIST}/../${MBNFILE}" "/data/vendor/modem_config/${MBNFILE}/mcfg_sw.mbn"
+fi
 done
 
 
@@ -39,7 +43,10 @@ cp "${MBN_LIST}/oem_sw.txt" "$MODPATH_LIST_OEM"
 echo "" >> "$MODPATH_LIST_OEM"
 local MBNFILE_OEM
 for MBNFILE_OEM in $MBN_FILES; do
-grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM"
+grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM"
+if [ -d /data/vendor/modem_config ]; then
+	cp -ra "$MODPATH_LIST_OEM" "/data/vendor/modem_config/mcfg_sw/oem_sw.txt"
+fi
 done
 
 # Extra files found on OnePlus 7
@@ -52,7 +59,7 @@ if [ -e "${MBN_LIST}/oem_sw_a.txt" ]; then
 	echo "" >> "$MODPATH_LIST_OEM2"
 	local MBNFILE_OEM
 	for MBNFILE_OEM in $MBN_FILES; do
-	grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM2" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM2"
+	grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM2" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM2"
 	done
 fi
 
@@ -65,6 +72,6 @@ if [ -e "${MBN_LIST}/oem_sw_w.txt" ]; then
 	echo "" >> "$MODPATH_LIST_OEM3"
 	local MBNFILE_OEM
 	for MBNFILE_OEM in $MBN_FILES; do
-	grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM3" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM3"
+	grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM3" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM3"
 	done
 fi

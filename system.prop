@@ -1,0 +1,14 @@
+# Force enable VoLTE
+persist.dbg.volte_avail_ovr=1
+persist.dbg.vt_avail_ovr=1
+persist.dbg.allow_ims_off=1
+persist.dbg.wfc_avail_ovr=1
+
+persist.data.iwlan.enable=true
+persist.data.iwlan=1
+persist.data.iwlan.ipsec.ap=1
+
+persist.radio.volte.dan_support=true
+persist.radio.VT_ENABLE=1
+persist.sys.cust.lte_config=true
+persist.rcs.supported=1
