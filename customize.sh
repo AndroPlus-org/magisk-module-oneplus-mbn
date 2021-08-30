@@ -7,10 +7,10 @@ local MBN_FILES
 
 MBN_LIST="/vendor/firmware_mnt/image/modem_pr/mcfg/configs/mcfg_sw"
 MBN_FILES="
-mcfg_sw/generic/APAC/DCM/Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/KDDI/Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/Rakuten/Commercial/mcfg_sw.mbn
-mcfg_sw/generic/APAC/SBM/Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/DCM/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/KDDI/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/Rakuten/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/SBM/pixel_Commercial/mcfg_sw.mbn
 "
 
 ui_print "- Installing Thai carrier configs"
@@ -41,6 +41,33 @@ local MBNFILE_OEM
 for MBNFILE_OEM in $MBN_FILES; do
 grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM"
 done
+
+# Extra files found on OnePlus 7
+local MODPATH_LIST_OEM2="${MODPATH}/system${MBN_LIST}/oem_sw_a.txt"
+if [ -e "${MBN_LIST}/oem_sw_a.txt" ]; then
+	cp "${MBN_LIST}/oem_sw_a.txt" "$MODPATH_LIST_OEM2"
+
+	# Add each path to mcfg_sw.mbn at the end of oem_sw.txt
+	#           ONLY IF the path is NOT EXIST in oem_sw.txt
+	echo "" >> "$MODPATH_LIST_OEM2"
+	local MBNFILE_OEM
+	for MBNFILE_OEM in $MBN_FILES; do
+	grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM2" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM2"
+	done
+fi
+
+local MODPATH_LIST_OEM3="${MODPATH}/system${MBN_LIST}/oem_sw_w.txt"
+if [ -e "${MBN_LIST}/oem_sw_w.txt" ]; then
+	cp "${MBN_LIST}/oem_sw_w.txt" "$MODPATH_LIST_OEM3"
+
+	# Add each path to mcfg_sw.mbn at the end of oem_sw.txt
+	#           ONLY IF the path is NOT EXIST in oem_sw.txt
+	echo "" >> "$MODPATH_LIST_OEM3"
+	local MBNFILE_OEM
+	for MBNFILE_OEM in $MBN_FILES; do
+	grep -qF "$MBNFILE_OEM" "$MODPATH_LIST_OEM3" || echo "$MBNFILE_OEM" >> "$MODPATH_LIST_OEM3"
+	done
+fi
 
 rm -rf /data/vendor/modem*
 rm -rf /data/vendor/radio/*
