@@ -11,6 +11,9 @@ Android 11 搭載の [OnePlus 9 Pro](https://androplus.org/entry/oneplus-9-pro-r
 
 ## Change log
 
+#### v05
+* Change modding method
+
 #### v04
 * Change modding method
 
