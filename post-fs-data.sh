@@ -7,71 +7,45 @@
 MODDIR=${0%/*}
 # This script will be executed in post-fs-data mode
 
-local MBN_LIST
-local MBN_FILES
+ensure_newline_end () {
+  tail -c 1 "$1" | read -r _ || echo '' >> "$1"
+}
 
-MBN_LIST="/vendor/firmware_mnt/image/modem_pr/mcfg/configs/mcfg_sw"
+MCFG_PATH=/vendor/firmware_mnt/image/modem_pr/mcfg/configs/mcfg_sw
+DATA_MCFG_PATH=/data/vendor/modem_config
 MBN_FILES="
-mcfg_sw/generic/APAC/DCM/pixel_Commercial
-mcfg_sw/generic/APAC/KDDI/pixel_Commercial
-mcfg_sw/generic/APAC/Rakuten/pixel_Commercial
-mcfg_sw/generic/APAC/SBM/pixel_Commercial
+mcfg_sw/generic/APAC/DCM/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/KDDI/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/Rakuten/pixel_Commercial/mcfg_sw.mbn
+mcfg_sw/generic/APAC/SBM/pixel_Commercial/mcfg_sw.mbn
 "
+MCFG_MODPATH=${MODDIR}/system${MCFG_PATH}
 
-local MODPATH_LIST="${MODPATH}/system${MBN_LIST}/mbn_sw.txt"
-cp "${MBN_LIST}/mbn_sw.txt" "$MODPATH_LIST"
+add_mcfg () {
+	SOURCE_LIST=${MCFG_PATH}/$1
+	if [ -e "$SOURCE_LIST" ]; then
+		TARGET_LIST=$MCFG_MODPATH/$1
+		cp "$SOURCE_LIST" "$TARGET_LIST"
+		ensure_newline_end "$TARGET_LIST"
+		for MBNFILE in $MBN_FILES; do
+			if grep -qF "$MBNFILE" "$TARGET_LIST"; then
+				echo "Skip $MBNFILE"
+			else
+				echo "Adding $MBNFILE to $TARGET_LIST" >> /cache/magisk.log
+				echo "$MBNFILE" >> "$TARGET_LIST"
+			fi
+			SOURCE_MBN=$MCFG_MODPATH/../$MBNFILE
+			TARGET_MBN=$DATA_MCFG_PATH/$MBNFILE
+			echo "Copying $(realpath $SOURCE_MBN) to $TARGET_MBN" >> /cache/magisk.log
+			mkdir -p "$(dirname $TARGET_MBN)"
+			cp "$(realpath $SOURCE_MBN)" "$TARGET_MBN"
+		done
+	fi
+}
 
-# Add each path to mcfg_sw.mbn at the end of mbn_sw.txt
-#           ONLY IF the path is NOT EXIST in mbn_sw.txt
-echo "" >> "$MODPATH_LIST"
-local MBNFILE
-for MBNFILE in $MBN_FILES; do
-grep -qF "$MBNFILE/mcfg_sw.mbn" "$MODPATH_LIST" || echo "$MBNFILE/mcfg_sw.mbn" >> "$MODPATH_LIST"
-if [ -d /data/vendor/modem_config ]; then
-	cp -ra "$MODPATH_LIST" "/data/vendor/modem_config/mcfg_sw/mbn_sw.txt"
-	mkdir -p "/data/vendor/modem_config/${MBNFILE}"
-	cp -ra "${MBN_LIST}/../${MBNFILE}" "/data/vendor/modem_config/${MBNFILE}/mcfg_sw.mbn"
-fi
-done
-
-
-local MODPATH_LIST_OEM="${MODPATH}/system${MBN_LIST}/oem_sw.txt"
-cp "${MBN_LIST}/oem_sw.txt" "$MODPATH_LIST_OEM"
-
-# Add each path to mcfg_sw.mbn at the end of oem_sw.txt
-#           ONLY IF the path is NOT EXIST in oem_sw.txt
-echo "" >> "$MODPATH_LIST_OEM"
-local MBNFILE_OEM
-for MBNFILE_OEM in $MBN_FILES; do
-grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM"
-if [ -d /data/vendor/modem_config ]; then
-	cp -ra "$MODPATH_LIST_OEM" "/data/vendor/modem_config/mcfg_sw/oem_sw.txt"
-fi
-done
-
-# Extra files found on OnePlus 7
-local MODPATH_LIST_OEM2="${MODPATH}/system${MBN_LIST}/oem_sw_a.txt"
-if [ -e "${MBN_LIST}/oem_sw_a.txt" ]; then
-	cp "${MBN_LIST}/oem_sw_a.txt" "$MODPATH_LIST_OEM2"
-
-	# Add each path to mcfg_sw.mbn at the end of oem_sw.txt
-	#           ONLY IF the path is NOT EXIST in oem_sw.txt
-	echo "" >> "$MODPATH_LIST_OEM2"
-	local MBNFILE_OEM
-	for MBNFILE_OEM in $MBN_FILES; do
-	grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM2" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM2"
-	done
-fi
-
-local MODPATH_LIST_OEM3="${MODPATH}/system${MBN_LIST}/oem_sw_w.txt"
-if [ -e "${MBN_LIST}/oem_sw_w.txt" ]; then
-	cp "${MBN_LIST}/oem_sw_w.txt" "$MODPATH_LIST_OEM3"
-
-	# Add each path to mcfg_sw.mbn at the end of oem_sw.txt
-	#           ONLY IF the path is NOT EXIST in oem_sw.txt
-	echo "" >> "$MODPATH_LIST_OEM3"
-	local MBNFILE_OEM
-	for MBNFILE_OEM in $MBN_FILES; do
-	grep -qF "$MBNFILE_OEM/mcfg_sw.mbn" "$MODPATH_LIST_OEM3" || echo "$MBNFILE_OEM/mcfg_sw.mbn" >> "$MODPATH_LIST_OEM3"
-	done
-fi
+add_mcfg "mbn_sw.txt"
+add_mcfg "oem_sw.txt"
+add_mcfg "oem_sw_a.txt"
+add_mcfg "oem_sw_w.txt"
+add_mcfg "oem_sw_all.txt"
+add_mcfg "oem_sw_comm.txt"
